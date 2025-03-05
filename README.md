@@ -1,31 +1,27 @@
+-- Carrega as bibliotecas Fluent, SaveManager e InterfaceManager
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+-- Criando a Janela da Interface
 local Window = Fluent:CreateWindow({
-    Title = "Brookhaven Rp🏡",
-    SubTitle = "by (👾 NexusPrime Hub 💠)",
+    Title = "Brookhaven RP 🏡 (Troll Hub 🤡)",
+    SubTitle = "🔥 Zoando geral! 💀",
     TabWidth = 160,
-    Size = UDim2.fromOffset(480, 310),
+    Size = UDim2.fromOffset(500, 320),
     Acrylic = true,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
 
--- Fonction permettant de changer d'avatar.
--- Si l'argument "id" est une table, on l'utilise tel quel ; sinon, on crée la table par défaut.
-local function fireAvatarChange(id, notificationTitle)
-    local argsTable
-    if type(id) == "table" then
-        argsTable = id
-    else
-        argsTable = {1, 1, 1, 1, 1, id}
-    end
+-- Função para trocar a cabeça do avatar
+local function changeAvatar(id, notificationTitle)
+    local argsTable = (type(id) == "table") and id or {1, 1, 1, 1, 1, id}
 
     local args = {
         [1] = "CharacterChange",
         [2] = argsTable,
-        [3] = "👾 NexusPrime Hub 💠"
+        [3] = "🔥 Troll Hub 💀"
     }
 
     local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -37,184 +33,172 @@ local function fireAvatarChange(id, notificationTitle)
             remote:FireServer(unpack(args))
             starterGui:SetCore("SendNotification", {
                 Title = notificationTitle,
-                Text = "Wait Please 1-10 Seconds",
+                Text = "Aguarde 1-10 segundos...",
                 Duration = 5
             })
         end
     end
 end
 
--- Création des tabs
+-- Criando Abas
 local Tabs = {
-    Credits = Window:AddTab({ Title = "z4trox Hub Tab", Icon = "scroll" }),
-    Avatar = Window:AddTab({ Title = "Avatar Tab", Icon = "shirt" }),
-    Bundles = Window:AddTab({ Title = "Bundle Tab", Icon = "users" }),
-    Music = Window:AddTab({ Title = "Music Tab", Icon = "music" })
+    Avatar = Window:AddTab({ Title = "👤 Avatar", Icon = "shirt" }),
+    Troll = Window:AddTab({ Title = "🤡 Troll", Icon = "alert" }),
+    Hacks = Window:AddTab({ Title = "⚡ Hacks", Icon = "zap" }),
+    About = Window:AddTab({ Title = "ℹ️ Sobre", Icon = "info" })
 }
 
 -----------------------------------------------------------
--- Section Avatar
+-- 👤 Avatar
 -----------------------------------------------------------
-Tabs.Avatar:AddSection("Head ID (❓)/Yellow Pastel (🟡)")
+Tabs.Avatar:AddSection("Trocar Cabeça")
 
-Tabs.Avatar:AddInput("Head ID (❓)", {
-    Title = "Head ID (❓)",
+Tabs.Avatar:AddInput("Head ID", {
+    Title = "Digite o ID da Cabeça",
     Default = "",
     Placeholder = "ID",
     Numeric = true,
     Finished = true,
     Callback = function(s)
-        fireAvatarChange(tonumber(s), "Loading")
+        changeAvatar(tonumber(s), "Carregando...")
         wait(1)
         game:GetService("StarterGui"):SetCore("SendNotification", {
-            Title = "Done",
-            Text = "Successfully ✅",
+            Title = "Pronto!",
+            Text = "Cabeça alterada com sucesso ✅",
             Duration = 3
         })
     end
 })
 
 Tabs.Avatar:AddButton({
-    Title = "Pastel Yellow (🟡)",
-    Description = "",
+    Title = "Headless Horseman",
+    Description = "Cabeça invisível!",
     Callback = function()
-        fireAvatarChange("Pastel yellow", "Pastel Yellow Applied")
-    end
-})
-
-Tabs.Avatar:AddSection("Character Head (👤)")
-
-Tabs.Avatar:AddButton({
-    Title = "Headless Horseman (👤)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(134082579, "Headless Horseman")
+        changeAvatar(134082579, "Headless Horseman Aplicado!")
     end
 })
 
 Tabs.Avatar:AddButton({
-    Title = "Blaze Burner (👤)",
-    Description = "Working 🔨",
+    Title = "Blaze Burner",
+    Description = "Cabeça flamejante 🔥",
     Callback = function()
-        fireAvatarChange(3210773801, "Blaze Burner")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Korblox DeathSpeaker (👤)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(16580493236, "Korblox DeathSpeaker")
-    end
-})
-
-Tabs.Avatar:AddSection("Classic Head (👥)")
-
-Tabs.Avatar:AddButton({
-    Title = "Classic Head (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(746767604, "Classic Head")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Strong Jaw (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(616399508, "Strong Jaw")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Narrow Head (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(746774687, "Narrow Head")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Chiseled Head (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(616387160, "Chiseled Head")
-    end
-})
-
-Tabs.Avatar:AddButton({
-    Title = "Paragon Head (👥)",
-    Description = "Working 🔨",
-    Callback = function()
-        fireAvatarChange(616398268, "Paragon Head")
+        changeAvatar(3210773801, "Blaze Burner Aplicado!")
     end
 })
 
 -----------------------------------------------------------
--- Section Bundles (avatars spécifiques)
+-- 🤡 Troll (ESP + KillBrick)
 -----------------------------------------------------------
-Tabs.Bundles:AddButton({
-    Title = "Inf15 Thin",
-    Description = "(Boy) U Need Body Avatar",
+Tabs.Troll:AddSection("Trollando no servidor!")
+
+-- ESP (ver todos os jogadores através das paredes)
+Tabs.Troll:AddButton({
+    Title = "Ativar ESP 🔍",
+    Description = "Veja todos os jogadores através das paredes!",
     Callback = function()
-        fireAvatarChange({
-            17873152058, 17873151683, 17873151726, 17873151827, 17873152017, 1
-        }, "Inf15 Thin")
-    end
-})
-
-Tabs.Bundles:AddButton({
-    Title = "Blush Fashion Doll (Black Torso)",
-    Description = "(Girl) Woman Arm/No Leg",
-    Callback = function()
-        fireAvatarChange({
-            96491916349570, 86499698, 86499716, 0, 0, 0
-        }, "Blush Fashion Doll")
-    end
-})
-
-Tabs.Bundles:AddButton({
-    Title = "Mini Plushie",
-    Description = "(Boy, Girl) U Need Small Body Ava",
-    Callback = function()
-        fireAvatarChange({
-            18865136555, 14579959062, 14579959191, 14579959249, 14579963667, 1
-        }, "Mini Plushie")
-    end
-})
-
------------------------------------------------------------
--- Section Music
------------------------------------------------------------
-Tabs.Music:AddSection("Music Section")
-
-Tabs.Music:AddInput("Enter Music ID", {
-    Title = "Enter Music ID",
-    Default = "",
-    Placeholder = "Enter ID here",
-    Finished = true,
-    Callback = function(Value)
-        local args = {
-            [1] = "PickingScooterMusicText",
-            [2] = Value
-        }
-        local replicatedStorage = game:GetService("ReplicatedStorage")
-        local remote = replicatedStorage.RE:FindFirstChild("1NoMoto1rVehicle1s")
-        if remote then
-            remote:FireServer(unpack(args))
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Character then
+                for _, part in pairs(player.Character:GetChildren()) do
+                    if part:IsA("BasePart") then
+                        local highlight = Instance.new("Highlight", part)
+                        highlight.FillColor = Color3.fromRGB(255, 0, 0)
+                        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+                    end
+                end
+            end
         end
     end
 })
 
------------------------------------------------------------
--- Section Credits
------------------------------------------------------------
-Tabs.Credits:AddSection("Update Logs📜/Credit 💳")
-Tabs.Credits:AddParagraph({
-    Title = "Update Logs 📜",
-    Content = "Added Bundles\nNew UI Library"
+-- KillBrick (Cria um bloco que mata qualquer um que tocar)
+Tabs.Troll:AddButton({
+    Title = "Criar KillBrick ☠️",
+    Description = "Cria um bloco que mata quem tocar nele!",
+    Callback = function()
+        local brick = Instance.new("Part", game.Workspace)
+        brick.Size = Vector3.new(5, 1, 5)
+        brick.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3, 0)
+        brick.Anchored = true
+        brick.BrickColor = BrickColor.new("Bright red")
+
+        brick.Touched:Connect(function(hit)
+            local humanoid = hit.Parent:FindFirstChild("Humanoid")
+            if humanoid then
+                humanoid.Health = 0
+            end
+        end)
+    end
 })
-Tabs.Credits:AddParagraph({
-    Title = "Credit 💳",
-    Content = "Discord💬 user: snobodj"
+
+-----------------------------------------------------------
+-- ⚡ Hacks (Velocidade + Pulo Infinito + Atravessar Paredes)
+-----------------------------------------------------------
+Tabs.Hacks:AddSection("Superpoderes!")
+
+-- Velocidade infinita
+Tabs.Hacks:AddButton({
+    Title = "Ativar Super Velocidade ⚡",
+    Description = "Corre mais rápido que o Flash!",
+    Callback = function()
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100
+    end
 })
+
+-- Pulo infinito
+Tabs.Hacks:AddButton({
+    Title = "Ativar Pulo Infinito 🦘",
+    Description = "Pule o quanto quiser sem limites!",
+    Callback = function()
+        game:GetService("UserInputService").JumpRequest:Connect(function()
+            game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        end)
+    end
+})
+
+-- Atravessar Paredes
+Tabs.Hacks:AddButton({
+    Title = "Ativar Atravessar Paredes 🚪",
+    Description = "Agora você pode atravessar as paredes!",
+    Callback = function()
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        local humanoid = character:WaitForChild("Humanoid")
+
+        -- Função para ativar atravessar paredes
+        local function enableWallWalk()
+            for _, part in pairs(character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false -- Desativa a colisão das partes do personagem
+                end
+            end
+        end
+
+        -- Função para desativar atravessar paredes (voltar ao normal)
+        local function disableWallWalk()
+            for _, part in pairs(character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true -- Restaura a colisão das partes do personagem
+                end
+            end
+        end
+
+        -- Ativa ou desativa o poder de atravessar paredes
+        enableWallWalk()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Poder Ativado!",
+            Text = "Você agora pode atravessar paredes! 🚪",
+            Duration = 5
+        })
+
+        -- Desativa o poder após 30 segundos
+        wait(30)
+        disableWallWalk()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Poder Desativado",
+            Text = "Você não pode mais atravessar paredes.",
+            Duration = 5
+        })
+    end
+})
+
+---------------------------------------------------------
