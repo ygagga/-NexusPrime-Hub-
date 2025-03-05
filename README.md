@@ -87,26 +87,39 @@ Tabs.Avatar:AddButton({
 })
 
 -----------------------------------------------------------
--- 🤡 Troll (ESP + KillBrick)
+-- 🤡 Troll (ESP)
 -----------------------------------------------------------
 Tabs.Troll:AddSection("Trollando no servidor!")
 
--- ESP (ver todos os jogadores através das paredes)
+-- ESP (Nome do Jogador e Distância)
 local espActive = false
+local espElements = {}  -- Tabela para armazenar os elementos de ESP criados
+
 Tabs.Troll:AddButton({
     Title = "Ativar ESP 🔍",
-    Description = "Veja todos os jogadores através das paredes!",
+    Description = "Veja o nome e distância dos jogadores!",
     Callback = function()
         espActive = true
         for _, player in pairs(game.Players:GetPlayers()) do
-            if player.Character then
-                for _, part in pairs(player.Character:GetChildren()) do
-                    if part:IsA("BasePart") then
-                        local highlight = Instance.new("Highlight", part)
-                        highlight.FillColor = Color3.fromRGB(255, 0, 0)
-                        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-                    end
-                end
+            if player.Character and player ~= game.Players.LocalPlayer then
+                local billboardGui = Instance.new("BillboardGui")
+                billboardGui.Parent = player.Character.Head
+                billboardGui.Adornee = player.Character.Head
+                billboardGui.Size = UDim2.new(0, 100, 0, 50)
+                billboardGui.StudsOffset = Vector3.new(0, 2, 0)
+                billboardGui.AlwaysOnTop = true
+
+                local textLabel = Instance.new("TextLabel")
+                textLabel.Parent = billboardGui
+                textLabel.Size = UDim2.new(1, 0, 1, 0)
+                textLabel.BackgroundTransparency = 1
+                textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                textLabel.TextStrokeTransparency = 0.8
+                textLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+                textLabel.TextSize = 14
+                textLabel.Text = player.Name .. "\n" .. tostring((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude) .. " studs"
+
+                table.insert(espElements, {player = player, billboardGui = billboardGui})
             end
         end
     end
@@ -118,54 +131,12 @@ Tabs.Troll:AddButton({
     Description = "Desativa o ESP!",
     Callback = function()
         espActive = false
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player.Character then
-                for _, part in pairs(player.Character:GetChildren()) do
-                    if part:IsA("BasePart") then
-                        local highlight = part:FindFirstChildOfClass("Highlight")
-                        if highlight then
-                            highlight:Destroy()
-                        end
-                    end
-                end
+        for _, element in ipairs(espElements) do
+            if element.billboardGui then
+                element.billboardGui:Destroy()
             end
         end
-    end
-})
-
--- KillBrick (Cria um bloco que mata qualquer um que tocar)
-local killBrickActive = false
-Tabs.Troll:AddButton({
-    Title = "Criar KillBrick ☠️",
-    Description = "Cria um bloco que mata quem tocar nele!",
-    Callback = function()
-        killBrickActive = true
-        local brick = Instance.new("Part", game.Workspace)
-        brick.Size = Vector3.new(5, 1, 5)
-        brick.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3, 0)
-        brick.Anchored = true
-        brick.BrickColor = BrickColor.new("Bright red")
-
-        brick.Touched:Connect(function(hit)
-            local humanoid = hit.Parent:FindFirstChild("Humanoid")
-            if humanoid then
-                humanoid.Health = 0
-            end
-        end)
-    end
-})
-
--- Desativar KillBrick
-Tabs.Troll:AddButton({
-    Title = "Desativar KillBrick ❌",
-    Description = "Desativa o KillBrick!",
-    Callback = function()
-        killBrickActive = false
-        for _, brick in pairs(game.Workspace:GetChildren()) do
-            if brick:IsA("Part") and brick.BrickColor == BrickColor.new("Bright red") then
-                brick:Destroy()
-            end
-        end
+        espElements = {}  -- Limpa a tabela de elementos de ESP
     end
 })
 
