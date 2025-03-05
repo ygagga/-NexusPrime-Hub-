@@ -259,6 +259,6 @@ Tabs.Hacks:AddButton({
 -----------------------------------------------------------
 -- ℹ️ Sobre
 -----------------------------------------------------------
-Tabs.About:AddSection("Sobre o Script")
+Tabs.About:AddSection("Criado por Shelby,user discord:snobodj")
 Tabs.About:AddParagraph("Criado por Troll Hub para bagunçar no Brookhaven RP!")
 Tabs.About:AddParagraph("Aproveite e divirta-se, mas sem exagerar! 😆")
