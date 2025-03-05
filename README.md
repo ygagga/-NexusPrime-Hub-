@@ -92,10 +92,12 @@ Tabs.Avatar:AddButton({
 Tabs.Troll:AddSection("Trollando no servidor!")
 
 -- ESP (ver todos os jogadores através das paredes)
+local espActive = false
 Tabs.Troll:AddButton({
     Title = "Ativar ESP 🔍",
     Description = "Veja todos os jogadores através das paredes!",
     Callback = function()
+        espActive = true
         for _, player in pairs(game.Players:GetPlayers()) do
             if player.Character then
                 for _, part in pairs(player.Character:GetChildren()) do
@@ -110,11 +112,34 @@ Tabs.Troll:AddButton({
     end
 })
 
+-- Desativar ESP
+Tabs.Troll:AddButton({
+    Title = "Desativar ESP ❌",
+    Description = "Desativa o ESP!",
+    Callback = function()
+        espActive = false
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player.Character then
+                for _, part in pairs(player.Character:GetChildren()) do
+                    if part:IsA("BasePart") then
+                        local highlight = part:FindFirstChildOfClass("Highlight")
+                        if highlight then
+                            highlight:Destroy()
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
 -- KillBrick (Cria um bloco que mata qualquer um que tocar)
+local killBrickActive = false
 Tabs.Troll:AddButton({
     Title = "Criar KillBrick ☠️",
     Description = "Cria um bloco que mata quem tocar nele!",
     Callback = function()
+        killBrickActive = true
         local brick = Instance.new("Part", game.Workspace)
         brick.Size = Vector3.new(5, 1, 5)
         brick.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3, 0)
@@ -130,9 +155,27 @@ Tabs.Troll:AddButton({
     end
 })
 
+-- Desativar KillBrick
+Tabs.Troll:AddButton({
+    Title = "Desativar KillBrick ❌",
+    Description = "Desativa o KillBrick!",
+    Callback = function()
+        killBrickActive = false
+        for _, brick in pairs(game.Workspace:GetChildren()) do
+            if brick:IsA("Part") and brick.BrickColor == BrickColor.new("Bright red") then
+                brick:Destroy()
+            end
+        end
+    end
+})
+
 -----------------------------------------------------------
 -- ⚡ Hacks (Velocidade + Pulo Infinito + Atravessar Paredes)
 -----------------------------------------------------------
+local speedActive = false
+local jumpActive = false
+local wallWalkActive = false
+
 Tabs.Hacks:AddSection("Superpoderes!")
 
 -- Velocidade infinita
@@ -140,7 +183,18 @@ Tabs.Hacks:AddButton({
     Title = "Ativar Super Velocidade ⚡",
     Description = "Corre mais rápido que o Flash!",
     Callback = function()
+        speedActive = true
         game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100
+    end
+})
+
+-- Desativar Velocidade
+Tabs.Hacks:AddButton({
+    Title = "Desativar Velocidade ❌",
+    Description = "Desativa a Super Velocidade!",
+    Callback = function()
+        speedActive = false
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
     end
 })
 
@@ -149,9 +203,21 @@ Tabs.Hacks:AddButton({
     Title = "Ativar Pulo Infinito 🦘",
     Description = "Pule o quanto quiser sem limites!",
     Callback = function()
+        jumpActive = true
         game:GetService("UserInputService").JumpRequest:Connect(function()
             game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
         end)
+    end
+})
+
+-- Desativar Pulo Infinito
+Tabs.Hacks:AddButton({
+    Title = "Desativar Pulo Infinito ❌",
+    Description = "Desativa o Pulo Infinito!",
+    Callback = function()
+        jumpActive = false
+        -- Desconectar a função de pulo infinito
+        game:GetService("UserInputService").JumpRequest:Disconnect()
     end
 })
 
@@ -160,38 +226,45 @@ Tabs.Hacks:AddButton({
     Title = "Ativar Atravessar Paredes 🚪",
     Description = "Agora você pode atravessar as paredes!",
     Callback = function()
+        wallWalkActive = true
         local player = game.Players.LocalPlayer
         local character = player.Character
         local humanoid = character:WaitForChild("Humanoid")
 
-        -- Função para ativar atravessar paredes
         local function enableWallWalk()
             for _, part in pairs(character:GetChildren()) do
                 if part:IsA("BasePart") then
-                    part.CanCollide = false -- Desativa a colisão das partes do personagem
+                    part.CanCollide = false
                 end
             end
         end
 
-        -- Função para desativar atravessar paredes (voltar ao normal)
-        local function disableWallWalk()
-            for _, part in pairs(character:GetChildren()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = true -- Restaura a colisão das partes do personagem
-                end
-            end
-        end
-
-        -- Ativa ou desativa o poder de atravessar paredes
         enableWallWalk()
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Poder Ativado!",
             Text = "Você agora pode atravessar paredes! 🚪",
             Duration = 5
         })
+    end
+})
 
-        -- Desativa o poder após 30 segundos
-        wait(30)
+-- Desativar Atravessar Paredes
+Tabs.Hacks:AddButton({
+    Title = "Desativar Atravessar Paredes ❌",
+    Description = "Desativa o poder de atravessar paredes!",
+    Callback = function()
+        wallWalkActive = false
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+
+        local function disableWallWalk()
+            for _, part in pairs(character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true
+                end
+            end
+        end
+
         disableWallWalk()
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Poder Desativado",
@@ -201,4 +274,9 @@ Tabs.Hacks:AddButton({
     end
 })
 
----------------------------------------------------------
+-----------------------------------------------------------
+-- ℹ️ Sobre
+-----------------------------------------------------------
+Tabs.About:AddSection("Sobre o Script")
+Tabs.About:AddParagraph("Criado por Troll Hub para bagunçar no Brookhaven RP!")
+Tabs.About:AddParagraph("Aproveite e divirta-se, mas sem exagerar! 😆")
