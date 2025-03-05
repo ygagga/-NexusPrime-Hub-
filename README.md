@@ -119,6 +119,17 @@ Tabs.Troll:AddButton({
                 textLabel.TextSize = 14
                 textLabel.Text = player.Name .. "\n" .. tostring((game.Players.LocalPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude) .. " studs"
 
+                -- Atualizar a distância dinamicamente
+                spawn(function()
+                    while espActive do
+                        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                            local distance = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
+                            textLabel.Text = player.Name .. "\n" .. math.floor(distance) .. " studs"
+                        end
+                        wait(0.1)  -- Atualiza a cada 0.1 segundos
+                    end
+                end)
+
                 table.insert(espElements, {player = player, billboardGui = billboardGui})
             end
         end
